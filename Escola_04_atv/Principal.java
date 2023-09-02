@@ -33,12 +33,11 @@ public class Principal {
         String emailAluno = sc.next();
         System.out.print("\tIdade: ");
         int idadeAluno = sc.nextInt();
+
+
         //instanciando objeto aluno
         Aluno aluno = new Aluno(nomeAluno, matriculaAluno, emailAluno, idadeAluno);
-        
-
-
-        
+                
         System.out.println("\nDigite os dados da turma:");
         System.out.println("\tId Turma: ");
         int idTurma = sc.nextInt();
@@ -56,6 +55,7 @@ public class Principal {
         //instanciando objeto Turma
         Turma turma = new Turma(idTurma, idDisciplinaTurma, turnoTurma, idProfessorTurma, semestreTurma);
 
+        //exibindo os dados
         System.out.println(disciplina.toString() + "\n");
         System.out.println(aluno.toString());
         System.out.println(turma.toString());
