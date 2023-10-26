@@ -1,32 +1,30 @@
+  public class Produto {
+      private String nome;
+      private int id;
+      private int quant;
+      private double valor;
 
+      public Produto(String nome, int id, int quant, double valor) {
+          this.nome = nome;
+          this.id = id;
+          this.quant = quant;
+          this.valor = valor;
+      }
 
-class Produto {
-    String nome;
-    int id;
-    double valor;
-    int quant;
-
-    public Produto(String nome, int id, int quant, double valor) {
-        this.nome = nome;
-        this.id = id;
-        this.quant = quant;
-        this.valor = valor;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Produto: " + nome + " | Id: " + id + "  | Quantidade: " + quant + " | Valor: R$" + valor;
-    }
-
-
+      public String getNome() {
+      return nome;
+      }
+      
     public int getId() {
-        return 0;
-    }
+          return id;
+      }
 
+      public double getValor() {
+          return valor;
+      }
 
-    public int getValor() {
-        return 0;
-    }
-}
-
+      @Override
+      public String toString() {
+          return "Produto: " + nome + " | Id: " + id + " | Quantidade: " + quant + " | Valor: R$" + valor;
+      }
+  }
