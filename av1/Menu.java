@@ -4,180 +4,91 @@ import java.util.Scanner;
 public class Menu {
     private ArrayList<Produto> listaProdutos = new ArrayList<>();
     private ArrayList<Cliente> listaClientes = new ArrayList<>();
-    private Carrinho carrinho = new Carrinho();
+    
+    public ProdutoApp produtoApp = new ProdutoApp();
+    public ClienteApp clienteApp = new ClienteApp();
+    public CarrinhoApp carrinhoApp = new CarrinhoApp();
 
-    public void Processamento() {
+    public void processamento() {
+        int opcao;
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nMenu:");
-            System.out.println("1. Cadastrar Produto");
-            System.out.println("2. Listar Produtos");
-            System.out.println("3. Remover Produto");
-            System.out.println("4. Buscar Produto");
-            System.out.println("5. Finalizar Compra");
-            System.out.println("6. Listar Clientes");
-            System.out.println("7. Remover Cliente");
-            System.out.println("8. Buscar Cliente");
-            System.out.println("0. Sair");
+            exibirMenu();
 
-            int opcao = sc.nextInt();
+            opcao = sc.nextInt();
             sc.nextLine(); // Consumir a quebra de linha
 
             switch (opcao) {
                 case 1:
-                    cadastrarProduto();
+                    produtoApp.adicionarProduto();
                     break;
-
                 case 2:
-                    listarProdutos();
+                
+                    produtoApp.listarProdutos();
                     break;
-
                 case 3:
-                    removerProduto(sc);
+                    produtoApp.removerProduto();
                     break;
-
                 case 4:
-                    buscarProduto(sc);
+                    produtoApp.alterarProduto();
                     break;
-
                 case 5:
-                    finalizarCompra(sc);
+                    produtoApp.buscarProdutoPorId(listaProdutos);
                     break;
-
                 case 6:
-                    listarClientes();
+                    finalizarCompra(listaProdutos, null, null);
                     break;
-
                 case 7:
-                    removerCliente(sc);
+                    clienteApp.listarClientes(listaClientes);
                     break;
-
                 case 8:
-                    buscarCliente(sc);
+                    clienteApp.removerCliente(listaClientes);
                     break;
-
+                case 9:
+                    clienteApp.buscarCliente(listaClientes);
+                    break;
+              
                 case 0:
                     System.out.println("Saindo...");
                     System.exit(0);
                     break;
-
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
         }
     }
 
-    private void cadastrarProduto() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nome do Produto: ");
-        String nomeProduto = sc.nextLine();
-        System.out.print("Id: ");
-        int idProduto = sc.nextInt();
-        System.out.print("Quantidade: ");
-        int qtdProduto = sc.nextInt();
-        System.out.print("Valor: R$");
-        double valorProduto = sc.nextDouble();
-        sc.nextLine(); // Consumir a quebra de linha
+    
 
-        Produto produto = new Produto(nomeProduto, idProduto, qtdProduto, valorProduto);
-        listaProdutos.add(produto);
-        System.out.println("Produto cadastrado com sucesso.");
+    private void exibirMenu() {
+        System.out.println("\nMenu:");
+        System.out.println("1. Cadastrar Produto");
+        System.out.println("2. Listar Produtos");
+        System.out.println("3. Remover Produto");
+        System.out.println("4. Alterar Produto");
+        System.out.println("5. Buscar Produto");
+        System.out.println("6. Finalizar Compra");
+        System.out.println("7. Listar Clientes");
+        System.out.println("8. Remover Cliente");
+        System.out.println("9. Buscar Cliente");
+        System.out.println("0. Sair");
+        System.out.print("Escolha uma opção: ");
     }
 
-    private void listarProdutos() {
-        if (listaProdutos.isEmpty()) {
-            System.out.println("Não há produtos cadastrados.");
-        } else {
-            System.out.println("Lista de Produtos:");
-            for (Produto p : listaProdutos) {
-                System.out.println(p);
-            }
-        }
-    }
+  private void finalizarCompra(ArrayList<Produto> listaProdutos, Carrinho carrinho, Cliente cliente) {
+      double valorTotal = carrinhoApp.calcularValorTotal();
 
-    private void removerProduto(Scanner sc) {
-        //Scanner sc = new Scanner(System.in);
-        System.out.print("Informe o nome do produto a ser removido: ");
-        String nomeRemover = sc.nextLine();
-        listaProdutos.removeIf(p -> p.getNome().equals(nomeRemover));
-        System.out.println("Produto removido com sucesso.");
-    }
+      // Verifique se o cliente existe na lista de clientes
+      if (cliente != null) {
+        
 
-    private void buscarProduto(Scanner sc) {
-        //Scanner sc = new Scanner(System.in);
-        System.out.print("Informe o nome do produto a ser buscado: ");
-        String nomeProduto = sc.nextLine();
-        boolean produtoEncontrado = false;
-        for (Produto prod : listaProdutos) {
-            if (prod.getNome().equals(nomeProduto)) {
-                System.out.println("Produto encontrado: " + prod);
-                produtoEncontrado = true;
-                break;
-            }
-        }
-        if (!produtoEncontrado) {
-            System.out.println("Produto não encontrado.");
-        }
-    }
+          System.out.println("Compra finalizada com sucesso!");
+          System.out.println("Valor total da compra: R$" + valorTotal);
+      } else {
+          System.out.println("Cliente não encontrado. A compra não pode ser finalizada.");
+      }
+  }
 
-    private void finalizarCompra(Scanner sc) {
-        //Scanner sc = new Scanner(System.in);
-        System.out.print("Nome do Cliente: ");
-        String nomeCliente = sc.nextLine();
-        Cliente cliente = new Cliente(nomeCliente);
-        listaClientes.add(cliente);
 
-        System.out.println("Escolha produtos para adicionar ao carrinho:");
-        for (int i = 0; i < listaProdutos.size(); i++) {
-            System.out.println((i + 1) + ". " + listaProdutos.get(i));
-        }
-        int escolha = sc.nextInt();
-        if (escolha >= 1 && escolha <= listaProdutos.size()) {
-            Produto produtoEscolhido = listaProdutos.get(escolha - 1);
-            carrinho.adicionarItem(produtoEscolhido.getId(), 1);
-            cliente.adicionarProduto(produtoEscolhido);
-            System.out.println("Produto adicionado ao carrinho.");
-        } else {
-            System.out.println("Escolha inválida.");
-        }
-    }
-
-    private void listarClientes() {
-        if (listaClientes.isEmpty()) {
-            System.out.println("Não há clientes cadastrados.");
-        } else {
-            System.out.println("Lista de Clientes:");
-            for (Cliente c : listaClientes) {
-                System.out.println(c);
-                c.listarProdutos();
-            }
-        }
-    }
-
-    private void removerCliente(Scanner sc) {
-        //Scanner sc = new Scanner(System.in);
-        System.out.print("Informe o nome do cliente a ser removido: ");
-        String nomeClienteRemover = sc.nextLine();
-        listaClientes.removeIf(c -> c.getNome().equals(nomeClienteRemover));
-        System.out.println("Cliente removido com sucesso.");
-    }
-
-    private void buscarCliente(Scanner sc) {
-        //Scanner sc = new Scanner(System.in);
-        System.out.print("Informe o nome do cliente a ser buscado: ");
-        String nomeClienteBuscar = sc.nextLine();
-        boolean clienteEncontrado = false;
-        for (Cliente c : listaClientes) {
-            if (c.getNome().equals(nomeClienteBuscar)) {
-                System.out.println("Cliente encontrado: " + c);
-                clienteEncontrado = true;
-                break;
-            }
-        }
-        if (!clienteEncontrado) {
-            System.out.println("Cliente não encontrado.");
-        }
-    }
-  
 }
