@@ -7,11 +7,15 @@ public class Reserva {
     private int idCliente;
     private String dataEntrada;
     private String dataSaida;
+    private static int ultimoId = 0;
 
+   
     private static List<Reserva> reservas = new ArrayList<>();
 
     public Reserva() {
         // Construtor vazio
+        // Incrementa o contador de ID e atribui à reserva atual
+        this.idReserva = ++ultimoId;
     }
 
     public Reserva(int idReserva, int idQuarto, int idCliente, String dataEntrada, String dataSaida) {
@@ -83,11 +87,18 @@ public class Reserva {
     }
 
 
-    public static void excluirReserva(int idReserva) {
-        reservas.removeIf(reserva -> reserva.getIdReserva() == idReserva);
-        System.out.println("Reserva excluída com sucesso!");
+    // Método para excluir uma reserva com base no ID
+    public static void excluirReserva(List<Reserva> reservas, String idReserva) {
+        //  encontrar e remover a reserva com o ID especificado
+        for (Reserva reserva : reservas) {
+            if (reserva.getIdReserva().equals(idReserva)) {
+                reservas.remove(reserva);
+                System.out.println("Reserva excluída com sucesso!");
+                return;
+            }
+        }
+        System.out.println("Reserva não encontrada com o ID fornecido.");
     }
-
 
 
     public static void listarReservas(List<Reserva> reservas) {
