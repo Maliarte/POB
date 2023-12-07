@@ -1,5 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Reserva {
     private int idReserva;
@@ -75,6 +78,27 @@ public class Reserva {
     return reservas.size() + 1;
     }
 
+     // Método para verificar se faltam menos de 3 dias a partir da data atual
+    private static boolean verificarMenosDe3Dias(String dataEntrada) {
+        try {
+            // Obtém a data atual
+            LocalDate dataAtual = LocalDate.now();
+
+            // Converte a string da data de entrada para um objeto LocalDate
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu");
+            LocalDate dataReserva = LocalDate.parse(dataEntrada, formatter);
+
+            // Calcula a diferença em dias entre a data atual e a data de entrada
+            long diasRestantes = ChronoUnit.DAYS.between(dataAtual, dataReserva);
+
+            // Retorna true se faltar menos de 3 dias, caso contrário, retorna false
+            return diasRestantes < 3;
+        } catch (Exception e) {
+            // Trata exceções ao fazer parsing da data
+            System.out.println("Erro ao verificar a diferença de dias: " + e.getMessage());
+            return false; // Pode retornar false em caso de erro
+        }
+    }
     
     public static void adicionarReserva(Reserva novaReserva) {
         reservas.add(novaReserva);
@@ -94,17 +118,21 @@ public class Reserva {
 
 
     // Método para excluir uma reserva com base no ID
-    public static void excluirReserva(List<Reserva> reservas, String idReserva) {
-        //  encontrar e remover a reserva com o ID especificado
-        for (Reserva reserva : reservas) {
-            if (reserva.getIdReserva().equals(idReserva)) {
-                reservas.remove(reserva);
-                System.out.println("Reserva excluída com sucesso!");
-                return;
-            }
+    public static void excluirReserva(int idReserva) {
+    Reserva reservaEncontrada = buscarReserva(idReserva);
+    if (reservaEncontrada != null) {
+        String dataEntrada = reservaEncontrada.getDataEntrada();
+        // Adicione a lógica para verificar se faltam menos de 3 dias a partir da data de entrada
+        if (verificarMenosDe3Dias(dataEntrada)) {
+            System.out.println("Não é possível excluir a reserva. Menos de 3 dias restantes.");
+        } else {
+            reservas.remove(reservaEncontrada);
+            System.out.println("Reserva excluída com sucesso!");
         }
+    } else {
         System.out.println("Reserva não encontrada com o ID fornecido.");
     }
+}
 
 
     public static void listarReservas(List<Reserva> reservas) {
