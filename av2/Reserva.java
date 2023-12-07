@@ -69,7 +69,13 @@ public class Reserva {
     }
 
     // Métodos adicionais
+    
+    //  gerar ID inteiro
+    private int gerarIdReserva() {
+    return reservas.size() + 1;
+    }
 
+    
     public static void adicionarReserva(Reserva novaReserva) {
         reservas.add(novaReserva);
     }
@@ -107,7 +113,6 @@ public class Reserva {
             System.out.println(reserva.toString()); // Supondo que você tenha um método toString() adequado em sua classe Reserva
         }
     }
-
 
     
     public static Reserva buscarReserva(int idReserva) {
