@@ -7,46 +7,7 @@ public class Quarto {
     private Boolean temBanheiro;
     private String descricao;
 
-    public int getIdQuarto() {
-        return idQuarto;
-    }
-
-    public void setIdQuarto(int idQuarto) {
-        this.idQuarto = idQuarto;
-    }
-
-    public String getNomeQuarto() {
-        return nomeQuarto;
-    }
-
-    public void setNomeQuarto(String nomeQuarto) {
-        this.nomeQuarto = nomeQuarto;
-    }
-
-    public int getQtdCama() {
-        return qtdCama;
-    }
-
-    public void setQtdCama(int qtdCama) {
-        this.qtdCama = qtdCama;
-    }
-
-    public Boolean getTemBanheiro() {
-        return temBanheiro;
-    }
-
-    public void setTemBanheiro(Boolean temBanheiro) {
-        this.temBanheiro = temBanheiro;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
+    //  getters e setters 
     public void detalharVagas() {
         Scanner scanner = new Scanner(System.in);
 
@@ -57,22 +18,26 @@ public class Quarto {
         System.out.println("3. Quarto de 12 vagas (com banheiro)");
 
         int opcaoQuarto = scanner.nextInt();
-        if (opcaoQuarto == 1) {
-            System.out.println("Vagas disponíveis: 4");
-            System.out.println("Possui Banheiro");
-        } else if (opcaoQuarto == 2) {
-            System.out.println("Vagas disponíveis: 8");
-            System.out.println("Não Possui Banheiro");
-        } else if (opcaoQuarto == 3) {
-            System.out.println("Vagas disponíveis: 12");
-            System.out.println("Possui Banheiro");
-        } else {
-            System.out.println("Opção inválida.");
-            return;
+
+        switch (opcaoQuarto) {
+            case 1:
+                System.out.println("Vagas disponíveis: 4");
+                System.out.println("Possui Banheiro");
+                break;
+            case 2:
+                System.out.println("Vagas disponíveis: 8");
+                System.out.println("Não Possui Banheiro");
+                break;
+            case 3:
+                System.out.println("Vagas disponíveis: 12");
+                System.out.println("Possui Banheiro");
+                break;
+            default:
+                System.out.println("Opção inválida.");
+                break;
         }
 
         scanner.close();
-  
     }
 
     // Método para verificar disponibilidade de vagas com ou sem banheiro
@@ -101,6 +66,7 @@ public class Quarto {
                 break;
             default:
                 System.out.println("Opção inválida.");
+                break;
         }
 
         scanner.close();
